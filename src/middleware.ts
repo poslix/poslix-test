@@ -7,7 +7,7 @@ export async function middleware(request: NextRequest) {
         if (!request.cookies.has('tokend'))
             return NextResponse.redirect(new URL('/user/login', request.url))
         let cookie = request.cookies.get('tokend')?.value
-        const response = await fetch("https://poslixapp.onrender.com/api/getinfo", { //https://poslix.onrender.com/api/getinfo
+        const response = await fetch("https://poslix-test.onrender.com/api/getinfo", { //https://poslix.onrender.com/api/getinfo
             method: 'Post',
             headers: {
                 'content-type': 'application/json',
