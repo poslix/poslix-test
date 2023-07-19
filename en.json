@@ -1,0 +1,39 @@
+{
+    "pos": {
+        "search": "Search...",
+        "navmenu": {
+            "dashboard": "Dashboard",
+            "close": "Close",
+            "refresh": "Refresh",
+            "logout": "Logout"
+        },
+        "cartComponent": {
+            "product": "Product",
+            "quantity": "Quantity",
+            "amount": "Amount",
+            "add": "Add Some Product(s)",
+            "tax": "Estimated Tax",
+            "shipping": "Shipping Charge",
+            "discount": "Discount",
+            "total": "Total Amount",
+            "delete": "Delete",
+            "hold": "Hold Card",
+            "orders": "Orders",
+            "saveOrder": "Save Order",
+            "checkout": "Check Out",
+            "orderModal": {
+                "hold": "Hold",
+                "holdName": "Hold Name",
+                "action": "Action",
+                "order": "Order",
+                "customer": "Customer",
+                "mobile": "Mobile",
+                "price": "Price"
+            }
+        },
+        "itemList":{
+            "category": "Category",
+            "brand": "Brand"
+        }
+    }
+}
