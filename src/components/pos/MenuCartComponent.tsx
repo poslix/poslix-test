@@ -995,7 +995,7 @@ export const MenuOrderComponent = (probs: any) => {
                     <td className="text-start" style={{ cursor: 'pointer' }}><span className="fw-medium cart-product-name"> {order.def_tax == false ? <i className="ri-flag-fill text-danger"></i> : ''}  {order.name} </span></td>
                     <td>
                       <div className="input-step">
-                        {(order.is_tailoring! > 0 || order.type == "tailoring_package") && <div className="btn-tailoring-edit minus mr-2" onClick={() => handleEditTailoring(i)}><i className="ri-edit-box-line" /></div>}
+                        {(order.is_tailoring! > 0 || order.type == "tailoring_package") && <div className="btn-tailoring-edit minus mr-2" onClick={() => handleEditTailoring(i)}><i className="ri-global-fill" /></div>}
                         <button type="button"
                           onClick={() => { quantityChange(i, 'minus'); }}
                           className="minus">{quantity[i].quantity === 1 ? <i className="fa-solid fa-xmark"></i> : "-"}

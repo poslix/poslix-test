@@ -1569,6 +1569,22 @@ table.GeneratedTable2 thead {
   margin-right: 50px;
 }
 
+.sty_ar{
+
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  /* flex-wrap: nowrap; */
+  align-content: center;
+  font-size: 1.1rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.sty_ar i{
+  font-size: 1.5rem;
+}
+
 
 @media (max-width:750px) {
   .container .card {

@@ -35,7 +35,7 @@ const NavMenu: any = (probs: any) => {
                         else {
                             localStorage.setItem('lang', 'en'); setLang(en)
                         }
-                    }}><i className="ri-edit-box-line"></i> <span>{lang == ar ? 'EN' : 'العربية'}</span> </div>
+                    }}><i className="ri-global-fill"></i> <span>{lang == ar ? 'EN' : 'العربية'}</span> </div>
                     <Link className='nav-link menu-link' href={'/shop/' + shopId + '/products'}><i className="ri-dashboard-2-line"></i> <span data-key="t-dashboards">{lang.pos.navmenu.dashboard}</span> </Link>
                     <Link className='nav-link menu-link' href={'#'} onClick={() => setCustomerIsModal(true)}> <i className="ri-stack-line"></i> <span data-key="t-dashboards">{lang.pos.navmenu.close}</span> </Link>
                     <Link className='nav-link menu-link' href={'#'} onClick={() => Router.reload()}><i className="ri-refresh-line"></i> <span data-key="t-dashboards">{lang.pos.navmenu.refresh}</span> </Link>
