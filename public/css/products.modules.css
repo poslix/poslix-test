@@ -1,0 +1,32 @@
+.product_id div {
+  color: rgb(20 127 237);
+  /* color: rgb(231, 37, 56); */
+}
+.clickable{
+  cursor: pointer;
+}
+:root{
+  --bg-dark-mode: #222;
+  --bg-light-mode: #fff;
+  --color-dark-mode: #fff;
+  --color-light-mode : #222;
+}
+.dark-mode-body {
+  background-color: var(--bg-dark-mode);
+  color: var(--color-dark-mode) !important;
+}
+.light-mode-body {
+  background-color: var(--bg-light-mode);
+  color: var(--color-light-mode);
+}
+.dark_mode{
+  transition: all 0.5s;
+}
+.dark_mode:hover{
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.dark_mode_style{
+  background-color: rgba(0, 0, 0, 0.8) ;
+  color: #fff;
+}
