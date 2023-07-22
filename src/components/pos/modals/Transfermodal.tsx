@@ -14,32 +14,60 @@ import Box from "@mui/material/Box";
 import SnakeAlert from "../utils/SnakeAlert";
 import mStyle from "../../../styles/Customermodal.module.css";
 import { Toastify } from "src/libs/allToasts";
+import { Button, ButtonGroup } from "react-bootstrap";
+import { DataGrid, GridColDef, GridRowParams, GridSelectionModel } from "@mui/x-data-grid";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faTrash,
+ faSearch
+} from "@fortawesome/free-solid-svg-icons";
+import { debounce } from "@mui/material";
 // const [locations, setLocations] = useState<{ value: number, label: string }[]>([])
-
 
 const Transfermodal = (probs: any) => {
   const { openDialog, statusDialog, userdata, showType, shopId } = probs;
-  const customerTemplate = {
+  const transferTemplte = {
     id: 0,
-    firstName: "",
-    lastName: "",
-    mobile: "",
-    addr1: "",
-    addr2: "",
-    city: "",
-    state: "",
-    country: "",
-    zipCode: "",
-    shipAddr: "",
+    date: "",
+    rebNo: "",
+    status: "",
+    loctionFrom: "",
+    loctionTo: "",
+    product: {
+      id: "",
+      name: '',
+      qty: "",
+      sell: "",
+      totalPrice: ""
+    },
+    charges: 0,
+    notes: ''
   };
+
+  
+  
+  const [products, setProducts] = useState<
+    {
+      id: number;
+      name: string;
+      qty?: number;
+      unitPrice?: number;
+      subtotal?: number;
+    }[]
+  >([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [moreInfo, setMoreInfo] = useState(false);
-  const [customerInfo, setCustomerInfo] = useState(customerTemplate);
+  const [transferInfo, setTransferInfo] = useState(transferTemplte);
+  console.log(transferInfo);
   const { customers, setCustomers } = useContext(ProductContext);
   const [open, setOpen] = useState(false);
   // JSON.parse(localStorage.getItem('userlocs') || '[]')
-  const [locations, setLocations] = useState<{ value: number, label: string }[]>([])
-  console.log('locationssssssssssss ',locations);
-  
+  const [locations, setLocations] = useState<
+    { value: number; label: string }[]
+  >([]);
+  console.log("locationssssssssssss ", locations);
+
   const [isLoading, setIsLoading] = useState(false);
   const [openSnakeBar, setOpenSnakeBar] = useState(false);
   const handleClose = () => {
@@ -48,93 +76,248 @@ const Transfermodal = (probs: any) => {
   };
   useEffect(() => {
     if (!statusDialog) return;
-    setCustomerInfo(customerTemplate);
+    setTransferInfo(transferTemplte);
     setOpen(statusDialog);
-    if (userdata !== undefined && showType != "add" && statusDialog)
-      getCustomerInfo(userdata.value);
-      var _locs = JSON.parse(localStorage.getItem('userlocs') || '[]');
-      setLocations(_locs)
+    if (userdata !== undefined && showType != "add" && statusDialog){}
+      // getCustomerInfo(userdata.value);
+    var _locs = JSON.parse(localStorage.getItem("userlocs") || "[]");
+    setLocations(_locs);
   }, [statusDialog]);
 
-  async function insertCustomerInfo() {
-    const { success, msg, code, newdata } = await apiInsertCtr({
-      type: "customer",
-      subType: "addCustomer",
-      shopId,
-      data: customerInfo,
-    });
-    if (success) {
-      setCustomers([...customers, newdata]);
-      handleClose();
-      Toastify("success", "Successfully Created");
-    } else if (code == 100) Toastify("error", msg);
-    else Toastify("error", "Has Error, Try Again...");
-  }
-  async function getCustomerInfo(theId: any) {
-    setIsLoading(true);
-    setCustomerInfo(customerTemplate);
-    var result = await apiFetchCtr({
-      fetch: "customer",
-      subType: "getCustomerInfo",
-      theId,
-      shopId,
-    });
-    if (result.success) {
-      console.log(result?.newdata[0]);
-      const selCustomer = result?.newdata[0];
-      setCustomerInfo({
-        ...customerInfo,
-        id: theId,
-        mobile: selCustomer.mobile,
-        firstName: selCustomer.first_name,
-        lastName: selCustomer.last_name,
-        city: selCustomer.city,
-        state: selCustomer.state,
-        addr1: selCustomer.addr1,
-        addr2: selCustomer.addr2,
-        zipCode: selCustomer.zip_code,
-        country: selCustomer.country,
-        shipAddr: selCustomer.shipping_address,
-      });
-      setIsLoading(false);
-      console.log(result.newdata[0].mobile);
-    } else {
-      Toastify("error", "has error, Try Again...");
-    }
-  }
-  async function editCustomerInfo() {
-    var result = await apiUpdateCtr({
-      type: "customer",
-      subType: "editCustomerInfo",
-      shopId,
-      data: customerInfo,
-    });
-    if (result.success) {
-      const cinx = customers.findIndex(
-        (customer) => customer.value === customerInfo.id
-      );
-      if (cinx > -1) {
-        const upCustomer = [...customers];
-        upCustomer[cinx] = {
-          ...upCustomer[cinx],
-          value: customerInfo.id,
-          label:
-            customerInfo.firstName +
-            " " +
-            customerInfo.lastName +
-            " | " +
-            customerInfo.mobile,
-          mobile: result.newdata.mobile,
-        };
-        setCustomers(upCustomer);
-      }
-      handleClose();
-      Toastify("success", "Successfully Edited");
-    } else Toastify("error", "has error, Try Again...");
-  }
+  useEffect(() => {
+    initDataPage();
+  }, []);
+
+  // async function insertCustomerInfo() {
+  //   const { success, msg, code, newdata } = await apiInsertCtr({
+  //     type: "customer",
+  //     subType: "addCustomer",
+  //     shopId,
+  //     data: transferInfo,
+  //   });
+  //   if (success) {
+  //     setCustomers([...customers, newdata]);
+  //     handleClose();
+  //     Toastify("success", "Successfully Created");
+  //   } else if (code == 100) Toastify("error", msg);
+  //   else Toastify("error", "Has Error, Try Again...");
+  // }
+  // async function getCustomerInfo(theId: any) {
+  //   setIsLoading(true);
+  //   setTransferInfo(transferTemplte);
+  //   var result = await apiFetchCtr({
+  //     fetch: "customer",
+  //     subType: "getCustomerInfo",
+  //     theId,
+  //     shopId,
+  //   });
+  //   if (result.success) {
+  //     console.log(result?.newdata[0]);
+  //     const selCustomer = result?.newdata[0];
+  //     setTransferInfo({
+  //       ...transferInfo,
+  //       id: theId,
+  //       mobile: selCustomer.mobile,
+  //       firstName: selCustomer.first_name,
+  //       lastName: selCustomer.last_name,
+  //       city: selCustomer.city,
+  //       state: selCustomer.state,
+  //       addr1: selCustomer.addr1,
+  //       addr2: selCustomer.addr2,
+  //       zipCode: selCustomer.zip_code,
+  //       country: selCustomer.country,
+  //       shipAddr: selCustomer.shipping_address,
+  //     });
+  //     setIsLoading(false);
+  //     console.log(result.newdata[0].mobile);
+  //   } else {
+  //     Toastify("error", "has error, Try Again...");
+  //   }
+  // }
+
+  // async function editCustomerInfo() {
+  //   var result = await apiUpdateCtr({
+  //     type: "customer",
+  //     subType: "editCustomerInfo",
+  //     shopId,
+  //     data: transferInfo,
+  //   });
+  //   if (result.success) {
+  //     const cinx = customers.findIndex(
+  //       (customer) => customer.value === transferInfo.id
+  //     );
+  //     if (cinx > -1) {
+  //       const upCustomer = [...customers];
+  //       upCustomer[cinx] = {
+  //         ...upCustomer[cinx],
+  //         value: transferInfo.id,
+  //         label:
+  //           transferInfo.firstName +
+  //           " " +
+  //           transferInfo.lastName +
+  //           " | " +
+  //           transferInfo.mobile,
+  //         mobile: result.newdata.mobile,
+  //       };
+  //       setCustomers(upCustomer);
+  //     }
+  //     handleClose();
+  //     Toastify("success", "Successfully Edited");
+  //   } else Toastify("error", "has error, Try Again...");
+  // }
   const makeShowSnake = (val: any) => {
     setOpenSnakeBar(val);
   };
+
+  async function initDataPage() {
+    const { success, data } = await apiFetchCtr({
+      fetch: "products",
+      subType: "getProducts",
+      shopId,
+    });
+    if (!success) {
+      Toastify("error", "Somthing wrong!!, try agian");
+      return;
+    }
+
+    
+    // console.log(data.products);
+    var products = data.products.map(ele => {
+      const subtotal = ele.sell_price * 1;
+      return {id: ele.id, name: ele.name, subtotal: subtotal, unitPrice: ele.sell_price, qty: 1}
+    })
+    console.log(products);
+    
+    setProducts(products);
+    setFilteredProducts(products);
+    setIsLoading(false);
+  }
+
+
+  const handelChangeQty = (event, id) => {
+    const value = event.target.value;
+    let prods = [...products];
+    let idx = prods.findIndex(ele => ele.id == id);
+    prods[idx].qty = value;
+    prods[idx].subtotal = value * prods[idx].unitPrice
+    setProducts(prods);
+  } 
+  const columns: GridColDef[] = [
+    // { field: "check", headerName: <Checkbox aria-label={"select-all"} onChange={(e: ChangeEvent<HTMLInputElement>)=>{
+    //   // if(e.target.checked) setSelectedItems([...selectedItems, row.id])
+    //   // else setSelectedItems(selectedItems.filter((id) => {return id !== row.id}))
+    // }} />,
+    // headerClassName:`${darkMode ? "dark-mode-body" : "light-mode-body "}` ,
+    // cellClassName:`${darkMode ? "dark-mode-body" : "light-mode-body "}`,
+    // minWidth: 10, renderCell: ({ row }: Partial<GridRowParams>) => (
+    //   <Checkbox aria-label={row.name} onChange={(e: ChangeEvent<HTMLInputElement>)=>{
+    //     if(e.target.checked) setSelectedItems([...selectedItems, row.id])
+    //     else setSelectedItems(selectedItems.filter((id) => {return id !== row.id}))
+    //   }} />
+    // ) },
+    { field: "id", headerName: "#", minWidth: 50 },
+    { field: "name", headerName: "name ", flex: 1 },
+    {
+      field: "qty",
+      headerName: "Quantity",
+      flex: 0.5,
+      renderCell: ({ row }: Partial<GridRowParams>) => (
+        <>
+          <input
+            type="number"
+            name="qty"
+            className="form-control"
+            value={row.qty}
+            min={1}
+            onChange={(e => {
+              handelChangeQty(e, row.id)
+            })}
+          />
+        </>
+      ),
+    },
+    {
+      field: "unitPrice",
+      headerName: "Unit Price",
+      flex: 1,
+      renderCell: ({ row }: Partial<GridRowParams>) => (
+        <>
+          <input
+          disabled
+            type="number"
+            name="unit-price"
+            className="form-control"
+            value={row.unitPrice}
+          />
+        </>
+      ),
+    },
+    {
+      field: "subtotal",
+      headerName: "Subtotal",
+      flex: 1,
+      renderCell: ({ row }: Partial<GridRowParams>) => (
+        <>
+          <input
+          disabled
+            type="number"
+            name="subtotal"
+            className="form-control"
+            value={row.subtotal}
+            // onChange={(e) =>
+            //   setTransferInfo({
+            //     ...transferInfo,
+            //     firstName: e.target.value,
+            //   })
+            // }
+          />
+        </>
+      ),
+    },
+    {
+      field: "action",
+      headerName: "Action ",
+      sortable: false,
+      disableExport: true,
+      flex: 1,
+      renderCell: ({ row }: Partial<GridRowParams>) => (
+        <>
+          <ButtonGroup className="mb-2 m-buttons-style">
+            <Button
+            // onClick={() => {
+            //   setSelectId(row.id);
+            //   setShow(true);
+            // }}
+            >
+              <FontAwesomeIcon icon={faTrash} />
+            </Button>
+          </ButtonGroup>
+        </>
+      ),
+    },
+  ];
+
+
+  const handleSearch = (event) => {
+    debounceSearchTerm(event.target.value);
+  };
+  // Debounce user input with lodash debounce function
+  const debounceSearchTerm = debounce((value) => {
+    setSearchTerm(value);
+  }, 500);
+
+  // Filter products based on search term
+  useEffect(() => {
+    if (searchTerm.trim()) {
+      const filteredList = products.filter(
+        (product) =>
+          product.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilteredProducts(filteredList);
+    } else {
+      setFilteredProducts(products);
+    }
+  }, [searchTerm, products]);
 
   return (
     <>
@@ -170,11 +353,11 @@ const Transfermodal = (probs: any) => {
                           type="datetime-local"
                           name="date"
                           className="form-control"
-                          value={customerInfo.firstName}
+                          value={transferInfo.date}
                           onChange={(e) =>
-                            setCustomerInfo({
-                              ...customerInfo,
-                              firstName: e.target.value,
+                            setTransferInfo({
+                              ...transferInfo,
+                              date: e.target.value,
                             })
                           }
                         />
@@ -186,51 +369,121 @@ const Transfermodal = (probs: any) => {
                           name="refrence-no"
                           className="form-control"
                           placeholder="Transactions"
-                          value={customerInfo.lastName}
+                          value={transferInfo.rebNo}
                           onChange={(e) =>
-                            setCustomerInfo({
-                              ...customerInfo,
-                              lastName: e.target.value,
+                            setTransferInfo({
+                              ...transferInfo,
+                              rebNo: e.target.value,
                             })
                           }
                         />
                       </div>
                       <div className="col-lg-4 mb-3">
                         <label>Status</label>
-                        <select
-                          className="form-select"
-                        >
-                          <option selected>Open this select menu</option>
-                          <option value="1">One</option>
-                          <option value="2">Two</option>
-                          <option value="3">Three</option>
+                        <select className="form-select" defaultValue={transferInfo.status} onChange={(e) =>
+                            setTransferInfo({
+                              ...transferInfo,
+                              status: e.target.value,
+                            })}>
+                          <option value={'Draft'}>Draft</option>
+                          <option value={'Processing'}>Processing</option>
+                          <option value={'Received'}>Received</option>
                         </select>
                       </div>
                       <div className="col-lg-6 mb-3">
                         <label>Location from</label>
-                        <select className="form-select">
-                        {locations.map((el,i) => {
-                            return(
-                              <option value={el.value}>
-                                {el.label}
-                              </option>
-                            )
+                        <select className="form-select" onChange={(e) =>
+                            setTransferInfo({
+                              ...transferInfo,
+                              loctionFrom: e.target.value,
+                            })}>
+                          {locations.map((el, i) => {
+                            return <option key={el.value} value={el.value}>{el.label}</option>;
                           })}
                         </select>
                       </div>
                       <div className="col-lg-6 mb-3">
                         <label>Location to</label>
-                        <select
-                          className="form-select"
-                        >
-                          {locations.map((el,i) => {
-                            return(
-                              <option value={el.value}>
-                                {el.label}
-                              </option>
-                            )
+                        <select className="form-select" onChange={(e) =>
+                            setTransferInfo({
+                              ...transferInfo,
+                              loctionTo: e.target.value,
+                            })}>
+                          {locations.map((el, i) => {
+                            return <option key={el.value} value={el.value}>{el.label}</option>;
                           })}
-                        </select>                       
+                        </select>
+                      </div>
+                      <div className="col-lg-8 input-group mb-3">
+                        <span className="input-group-text" id="basic-addon1">
+                        <FontAwesomeIcon icon={faSearch} />
+                        </span>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Search"
+                          onChange={handleSearch}
+                        />
+                      </div>
+                      <div style={{ height: 350, width: '100%' }}>
+                        <DataGrid
+                          // checkboxSelection
+                          className="datagrid-style"
+                          sx={{
+                            ".MuiDataGrid-columnSeparator": {
+                              display: "none",
+                            },
+                            "&.MuiDataGrid-root": {
+                              border: "none",
+                            },
+                          }}
+                          checkboxSelection
+                          rows={searchTerm.length > 0 ? filteredProducts : []}
+                          columns={columns}
+                          // pageSize={10}
+                          // rowsPerPageOptions={[10]}
+                          onSelectionModelChange={(ids: GridSelectionModel) =>
+                            {
+                            // onRowsSelectionHandler(ids)
+                            console.log('idddddddddd', ids);
+                            }
+                            
+                          }
+                          // onCellClick={handleCellClick}
+                          // components={{ Toolbar: CustomToolbar }}
+                        />
+                      </div>
+
+                      <div className="col-lg-6 mb-3">
+                        <label>Shipping Charges: </label>
+                        <input
+                          type="number"
+                          name="charge"
+                          className="form-control"
+                          value={transferInfo.charges}
+                          onChange={(e) =>
+                            setTransferInfo({
+                              ...transferInfo,
+                              charges: +(e.target.value),
+                            })
+                          }
+                        />
+                      </div>
+                      <div className="col-lg-6 mb-3">
+                        <label htmlFor="notes" className="form-label">
+                          Example textarea
+                        </label>
+                        <textarea
+                          className="form-control"
+                          id="notes"
+                          rows={3}
+                          value={transferInfo.notes}
+                          onChange={(e) =>
+                            setTransferInfo({
+                              ...transferInfo,
+                              notes: e.target.value,
+                            })}
+                        ></textarea>
                       </div>
                     </div>
                   </fieldset>
@@ -246,11 +499,11 @@ const Transfermodal = (probs: any) => {
                     <button
                       type="button"
                       className="btn btn-primary"
-                      onClick={() => {
-                        console.log(customerInfo);
-                        if (showType == "edit") editCustomerInfo();
-                        else insertCustomerInfo();
-                      }}
+                      // onClick={() => {
+                      //   console.log(transferInfo);
+                      //   if (showType == "edit") editCustomerInfo();
+                      //   else insertCustomerInfo();
+                      // }}
                     >
                       {showType} Transfer
                     </button>
