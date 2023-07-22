@@ -149,7 +149,7 @@ export interface IOrdersCalcs {
   totalDiscount?: number;
   setDiscount?: (discount: Discount) => void;
   __WithDiscountFeature__total?: number;
-  lang: any
+  lang?: any
 }
 
 export interface IVariation {
