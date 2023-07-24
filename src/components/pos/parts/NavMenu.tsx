@@ -28,7 +28,7 @@ const NavMenu: any = (probs: any) => {
 
                 <div id="scrollbar">
                     {/* Back To List</Link> */}
-                    <div className='nav-link menu-link' style={{cursor: 'pointer'}} onClick={() => {
+                    <div className='nav-link menu-link sty_ar' style={{cursor: 'pointer'}} onClick={() => {
                         if(lang == en) {
                             localStorage.setItem('lang', 'ar'); setLang(ar)
                         }
