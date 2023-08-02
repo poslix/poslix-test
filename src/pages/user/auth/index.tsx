@@ -21,8 +21,8 @@ import {
 } from 'src/libs/toolsUtils';
 import { ELocalStorageKeys } from 'src/utils/app-contants';
 import { apiInsertCtr, apiLogin } from '../../../libs/dbUtils';
-import { colourStyles } from 'src/_utils/color.style';
-import { clearLocalStorageItems } from 'src/_utils/clearLocalStorageItems';
+import { colourStyles } from 'src/utils/color.style';
+import { clearLocalStorageItems } from 'src/utils/clearLocalStorageItems';
 
 
 
