@@ -21,8 +21,8 @@ import {
 } from 'src/libs/toolsUtils';
 import { ELocalStorageKeys } from 'src/utils/app-contants';
 import { apiInsertCtr, apiLogin } from '../../../libs/dbUtils';
-import { clearLocalStorageItems } from '../../../_utils/clearLocalStorageItems';
-import { colourStyles } from '../../../_utils/color.style';
+import { colourStyles } from 'src/_utils/color.style';
+import { clearLocalStorageItems } from 'src/_utils/clearLocalStorageItems';
 
 const initalInputState = {
   id: '',
