@@ -1,39 +1,41 @@
 {
-    "pos": {
-        "search": "بحث...",
-        "navmenu": {
-            "dashboard": "لوحة التحكم",
-            "close": "إغلاق",
-            "refresh": "إعادة تحميل",
-            "logout": "تسجيل خروج"
-        },
-        "cartComponent": {
-            "product": "المنتج",
-            "quantity": "الكمية",
-            "amount": "السعر",
-            "add": "أضف بعض المنتجات",
-            "tax": "الضريبة",
-            "shipping": "الشحن",
-            "discount": "خصم",
-            "total": "المبلغ الإجمالى",
-            "delete": "ازالة",
-            "hold": "حجز الطلب",
-            "orders": "الطلبات",
-            "saveOrder": "حفظ الطلب",
-            "checkout": "الدفع",
-            "orderModal": {
-                "hold": "حجز",
-                "holdName": "اسم الحجز",
-                "action": "العمليات",
-                "order": "طلب",
-                "customer": "عميل",
-                "mobile": "الهاتف",
-                "price": "السعر"
-            }
-        },
-        "itemList":{
-            "category": "الفئة",
-            "brand": "الماركة"
-        }
+  "pos": {
+    "search": "بحث...",
+    "navmenu": {
+      "dashboard": "لوحة التحكم",
+      "close": "إغلاق",
+      "refresh": "إعادة تحميل",
+      "logout": "تسجيل خروج",
+      "fullscreen": "ملء الشاشة",
+      "minimize": "حجم طبيعي"
+    },
+    "cartComponent": {
+      "product": "المنتج",
+      "quantity": "الكمية",
+      "amount": "السعر",
+      "add": "أضف بعض المنتجات",
+      "tax": "الضريبة",
+      "shipping": "الشحن",
+      "discount": "خصم",
+      "total": "المبلغ الإجمالى",
+      "delete": "ازالة",
+      "hold": "حجز الطلب",
+      "orders": "الطلبات",
+      "saveOrder": "حفظ الطلب",
+      "checkout": "الدفع",
+      "orderModal": {
+        "hold": "حجز",
+        "holdName": "اسم الحجز",
+        "action": "العمليات",
+        "order": "طلب",
+        "customer": "عميل",
+        "mobile": "الهاتف",
+        "price": "السعر"
+      }
+    },
+    "itemList": {
+      "category": "الفئة",
+      "brand": "الماركة"
     }
+  }
 }
