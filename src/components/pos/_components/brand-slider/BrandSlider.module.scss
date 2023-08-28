@@ -1,0 +1,52 @@
+.swiper-wrapper {
+  :global(.swiper-wrapper) {
+    padding: 0.5rem 3rem;
+  }
+  :global(.swiper-button-prev),
+  :global(.swiper-button-next) {
+    color: #000;
+    background-color: #fff;
+    border-radius: 50%;
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid #e5e5e5;
+    transition: all 0.2s ease-in-out;
+    &:hover {
+      background-color: #f5f5f5;
+    }
+    &::after {
+      font-size: 1.5rem;
+    }
+    &::before {
+      font-size: 1.5rem;
+    }
+  }
+  .item-container {
+    font-size: 1rem;
+    height: min-content;
+    border: 1px solid #e5e5e5;
+    text-align: center;
+    border-radius: 0.5rem;
+    padding: 0.1rem 0.2rem;
+    margin: 0 0.3rem;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    a {
+      color: #525252;
+      text-decoration: none;
+    }
+    &:global(.active) {
+      background-color: #f5f5f5;
+      a {
+        color: #000;
+        font-weight: 600;
+      }
+    }
+    &:hover {
+      background-color: #f5f5f5;
+      a {
+        color: #000;
+      }
+    }
+  }
+}

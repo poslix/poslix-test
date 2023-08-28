@@ -1,0 +1,17 @@
+.bgg{
+    background: #f3f6f9;
+    min-width: 500px;
+}
+.dialogBox{
+    background: rgba(238, 238, 238, 0.459);
+    
+}
+.dialogBox label{
+    font-weight: 500;
+    font-size: 12px;
+    color: black;
+}
+.OrdersModalStyle{
+    background: #f3f6f9;
+    min-width: 600px; 
+}
