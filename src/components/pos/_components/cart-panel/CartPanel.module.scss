@@ -1,0 +1,13 @@
+.cart__container {
+  background-color: white;
+  background: linear-gradient(180deg, #ffffff 80%, #f2f2f2 100%);
+  border-radius: 0.8rem;
+  box-shadow: 0 2px 4px rgba(15, 34, 58, 0.12);
+  padding: 10px;
+  margin: 10px 10px 15px 0px;
+  width: 40%;
+  max-height: calc(100vh - 2 * 10px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}

@@ -1,0 +1,10 @@
+.item-list__container {
+  overflow-y: hidden;
+  padding-bottom: 0.5rem;
+
+  :global(.items-list) {
+    overflow-y: auto;
+    height: 100%;
+    border-radius: 2rem;
+  }
+}
