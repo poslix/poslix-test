@@ -1,0 +1,12 @@
+.form {
+  max-width: 100rem;
+  margin-inline: auto;
+  padding: 1rem;
+  width: clamp(200px, 80%, 500px);
+  outline: 1px solid gray;
+  border-radius: 0.5rem;
+}
+
+.location-header {
+  text-transform: capitalize;
+}
