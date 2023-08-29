@@ -1,0 +1,11 @@
+.panel-container {
+  :global(.nav-item) {
+    cursor: pointer;
+    user-select: none;
+    text-decoration: none;
+    a {
+      transition: all 0.2s ease-in-out;
+      text-decoration: none;
+    }
+  }
+}
